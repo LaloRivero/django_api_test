@@ -19,7 +19,7 @@ class Company (models.Model):
     modified_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        ''' Order the results by the date of creation '''
+        ''' Order the results by the date of creation, last appears first '''
         ordering = ['-created_at']
 
     def __str__(self):
