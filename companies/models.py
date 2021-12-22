@@ -5,6 +5,7 @@ import uuid
 
 # Django
 from django.db import models
+from django.contrib.postgres.fields import ArrayField
 
 
 class Company (models.Model):
@@ -14,6 +15,7 @@ class Company (models.Model):
     name = models.CharField(max_length=50, blank=True, null=True)
     description = models.CharField(max_length=100, blank=True, null=True)
     ticker = models.CharField(max_length=10, blank=True, null=True)
+    values = ArrayField(models.IntegerField(), size=50)
     created_at = models.DateTimeField(auto_now=True)
     modified_at = models.DateTimeField(auto_now_add=True)
 
@@ -24,13 +26,3 @@ class Company (models.Model):
     def __str__(self):
         ''' Return the ticker to identify the company '''
         return self.ticker
-
-
-class Values (models.Model):
-    ''' MArket values model '''
-
-    value = models.IntegerField()
-    company = models.ForeignKey(Company, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.value
