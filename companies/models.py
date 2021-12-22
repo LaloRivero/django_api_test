@@ -27,3 +27,11 @@ class Company (models.Model):
         return self.ticker
 
 
+class Values (models.Model):
+    ''' MArket values model '''
+
+    value = models.IntegerField()
+    company = models.ForeignKey(Company, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.value
