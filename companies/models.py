@@ -15,5 +15,15 @@ class Company (models.Model):
     name = models.CharField(max_length=50, blank=True, null=True)
     description = models.CharField(max_length=100, blank=True, null=True)
     ticker = models.CharField(max_length=10, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now=True)
+    modified_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ''' Order the results by the date of creation '''
+        ordering = ['-created_at']
+
+    def __str__(self):
+        ''' Return the ticker to identify the company '''
+        return self.ticker
 
 
