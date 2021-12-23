@@ -46,3 +46,11 @@ class CompanyViewSet(mixins.CreateModelMixin,
 
         serializer = CompanySerializer(queryset, many=True)
         return Response(serializer.data)
+
+    def retrieve(self, request, *args, **kwargs):
+        ''' Show a Company data '''
+
+        instance = self.get_object()
+        instance.values = self.convert_str_to_list(instance)
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
