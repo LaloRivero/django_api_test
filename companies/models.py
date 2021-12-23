@@ -5,17 +5,16 @@ import uuid
 
 # Django
 from django.db import models
-from django.contrib.postgres.fields import ArrayField
 
 
 class Company (models.Model):
     ''' Company model that fit the application requirements  '''
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    name = models.CharField(max_length=50, blank=True, null=True)
-    description = models.CharField(max_length=100, blank=True, null=True)
-    ticker = models.CharField(max_length=10, blank=True, null=True)
-    values = models.CharField(max_length=255)
+    name = models.CharField(max_length=50, blank=False, null=False)
+    description = models.CharField(max_length=100, blank=False, null=False)
+    ticker = models.CharField(max_length=10, blank=False, null=False)
+    values = models.CharField(max_length=255, blank=False, null=False)
     created_at = models.DateTimeField(auto_now=True)
     modified_at = models.DateTimeField(auto_now_add=True)
 
