@@ -2,26 +2,36 @@
 
 # Django REST Framework
 from rest_framework import serializers
+from rest_framework.validators import UniqueValidator
 
+# Models
+from companies.models import Company
 
-class CompanyModelSerializer(serializers.Serializer):
+class CompanySerializer(serializers.Serializer):
     ''' Handels Company Data '''
 
+    id = serializers.CharField(required=False, allow_blank=True, allow_null=True)
     name = serializers.CharField(min_length=8, max_length=50)
-    description = serializers.CharField(min_length=20, max_lenght=100)
-    ticker = serializers.CharField(min_length=4, max_length=5)
-    values = serializers.CharField(min_length=100, max_length=250)
+    description = serializers.CharField(min_length=20, max_length=100)
+    ticker = serializers.CharField(min_length=4,
+                                   max_length=5,
+                                   validators=[UniqueValidator(queryset=Company.objects.all())])
+    values = serializers.ListField(child=serializers.IntegerField(min_value=0, max_value=100))
 
     def validate(self, data):
         ''' Verify that the values are an integer number
             and there are 50 of them. '''
 
-        values = int(data['values'].split(','))
-        cont=0
-        for num in values:
-            if type(num) != int:
-                raise serializers.ValidationError({'Error':'Not a valid input'})
-            cont+=1
+        if len(data["values"]) != 50:
+             raise serializers.ValidationError({'Error':'You need to enter a 50 integer values'})
 
-        if cont != 50:
-            raise serializers.ValidationError({'Error':'You need to enter a 50 integer values'})
+        return data
+
+    def create(self, data):
+
+        data["values"]=str(data["values"])
+        company = Company.objects.create(name=data["name"],
+                                         description=data["description"],
+                                         ticker=data["ticker"],
+                                         values=data["values"])
+        return company
