@@ -28,6 +28,7 @@ class CompanySerializer(serializers.Serializer):
         return data
 
     def create(self, data):
+        ''' Handle the creation of a new company '''
 
         data["values"]=str(data["values"])
         company = Company.objects.create(name=data["name"],
@@ -35,3 +36,6 @@ class CompanySerializer(serializers.Serializer):
                                          ticker=data["ticker"],
                                          values=data["values"])
         return company
+
+    def update(self, instance, validated_data):
+        return super().update(instance, validated_data)
