@@ -1,28 +1,27 @@
 ''' Companies models serializers '''
 
 # Django REST Framework
-from django.db.models import fields
-from django.db.models.expressions import Value
 from rest_framework import serializers
 
-# Models
-from companies.models import Company, Values
 
+class CompanyModelSerializer(serializers.Serializer):
+    ''' Handels Company Data '''
 
-class ValuesModelSerializer (serializers.ModelSerializer):
-    ''' Company model serializer'''
+    name = serializers.CharField(min_length=8, max_length=50)
+    description = serializers.CharField(min_length=20, max_lenght=100)
+    ticker = serializers.CharField(min_length=4, max_length=5)
+    values = serializers.CharField(min_length=100, max_length=250)
 
-    class Meta:
-        model = Values
-        fields = ['value']
+    def validate(self, data):
+        ''' Verify that the values are an integer number
+            and there are 50 of them. '''
 
+        values = int(data['values'].split(','))
+        cont=0
+        for num in values:
+            if type(num) != int:
+                raise serializers.ValidationError({'Error':'Not a valid input'})
+            cont+=1
 
-class CompanyModelSerializer(serializers.ModelSerializer):
-    ''' Company Model Serializer '''
-
-    values = ValuesModelSerializer()
-
-    class Meta:
-        model = Company
-        fields = ['id','name','description','ticker', 'values']
-        depth = 1
+        if cont != 50:
+            raise serializers.ValidationError({'Error':'You need to enter a 50 integer values'})
