@@ -1,3 +1,11 @@
+''' Companies admin config '''
+
 from django.contrib import admin
 
-# Register your models here.
+# Models
+from companies.models import Company
+
+@admin.register(Company)
+class CompanyAdmin(admin.ModelAdmin):
+
+    list_display=['id','name','description', 'ticker', 'values']
