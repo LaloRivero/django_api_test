@@ -22,6 +22,7 @@ class CompanyViewSet(mixins.CreateModelMixin,
     serializer_class = CompanySerializer
 
     def convert_str_to_list(self,data):
+        ''' Convert an array of numbers save in the data base to a list as a response '''
         new_list = []
         for num in data.values:
             try:
@@ -32,6 +33,8 @@ class CompanyViewSet(mixins.CreateModelMixin,
         return new_list
 
     def list(self, request, *args, **kwargs):
+        ''' List all the companies with pagination'''
+
         queryset = Company.objects.all()
         for q in queryset:
             q.values = self.convert_str_to_list(q)
