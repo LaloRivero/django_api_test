@@ -30,3 +30,16 @@ class CompanyViewSet(mixins.CreateModelMixin,
                 pass
 
         return new_list
+
+    def list(self, request, *args, **kwargs):
+        queryset = Company.objects.all()
+        for q in queryset:
+            q.values = self.convert_str_to_list(q)
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = CompanySerializer(queryset, many=True)
+        return Response(serializer.data)
