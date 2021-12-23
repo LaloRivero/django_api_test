@@ -15,7 +15,7 @@ class Company (models.Model):
     name = models.CharField(max_length=50, blank=True, null=True)
     description = models.CharField(max_length=100, blank=True, null=True)
     ticker = models.CharField(max_length=10, blank=True, null=True)
-    values = ArrayField(models.IntegerField(), size=50)
+    values = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now=True)
     modified_at = models.DateTimeField(auto_now_add=True)
 
