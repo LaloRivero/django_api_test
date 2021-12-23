@@ -38,4 +38,13 @@ class CompanySerializer(serializers.Serializer):
         return company
 
     def update(self, instance, validated_data):
-        return super().update(instance, validated_data)
+        ''' Handle the update and partial update accions '''
+
+        instance.name = validated_data.get('name', instance.name)
+        instance.description = validated_data.get('description', instance.description)
+        instance.ticker = validated_data.get('ticker', instance.ticker)
+        instance.values = validated_data.get('values', instance.values)
+
+        instance.save()
+
+        return instance
