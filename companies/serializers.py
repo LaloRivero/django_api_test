@@ -16,16 +16,9 @@ class CompanySerializer(serializers.Serializer):
     ticker = serializers.CharField(min_length=4,
                                    max_length=5,
                                    validators=[UniqueValidator(queryset=Company.objects.all())])
-    values = serializers.ListField(child=serializers.IntegerField(min_value=0, max_value=100))
-
-    def validate(self, data):
-        ''' Verify that the values are an integer number
-            and there are 50 of them. '''
-
-        if len(data["values"]) != 50:
-             raise serializers.ValidationError({'Error':'You need to enter a 50 integer values'})
-
-        return data
+    values = serializers.ListField(child=serializers.IntegerField(min_value=0, max_value=100),
+                                   min_length=50,
+                                   max_length=50)
 
     def create(self, data):
         ''' Handle the creation of a new company '''
