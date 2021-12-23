@@ -54,3 +54,12 @@ class CompanyViewSet(mixins.CreateModelMixin,
         instance.values = self.convert_str_to_list(instance)
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
+
+    def create(self, request, *args, **kwargs):
+        ''' Recieve a data, validated and create a new company '''
+
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.validated_data)
+        return Response(serializer.validated_data, status=status.HTTP_201_CREATED, headers=headers)
